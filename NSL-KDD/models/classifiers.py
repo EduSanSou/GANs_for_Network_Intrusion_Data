@@ -117,6 +117,7 @@ def compare(x_old, y_old, x_test, y_test, data_generator, label_mapping, models,
                 nameUpsampler = 'RELU'
                 noise = np.random.normal(0, 1, (n, rand_noise_dim))
                 generated_x = data_generator(noise, labels).numpy()
+                generated_x = generated_x[:, :x_old.shape[1]]
             new_trainx = np.vstack([x_old,generated_x])
             new_y = np.append(y_old,labels)
         else :

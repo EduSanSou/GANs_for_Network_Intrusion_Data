@@ -35,9 +35,10 @@ def compare_classifiers(x_old, y_old, x_test, y_test, data_generator, label_mapp
     print(up_sampling_strategy)
     start_t = time()
     nameUpsampler = "DGM"
+    print(label_mapping)
     if isinstance(data_generator,str):
         print(f'Using : {data_generator}')
-        up_sampling_strategy = {label_mapping["probe"]:14656, label_mapping["r2l"]:13995,label_mapping["u2r"]:10052}
+        #up_sampling_strategy = {label_mapping["probe"]:14656, label_mapping["r2l"]:13995,label_mapping["u2r"]:10052}
         if data_generator == "ADASYN":
             sm = ADASYN(sampling_strategy = up_sampling_strategy,n_jobs=-1)
         elif data_generator == "SMOTEENN":
