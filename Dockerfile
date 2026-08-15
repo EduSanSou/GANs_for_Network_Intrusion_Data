@@ -24,7 +24,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     git build-essential \
     && rm -rf /var/lib/apt/lists/*
 
-RUN git clone https://github.com/mayara-santos01/GANs_for_Network_Intrusion_Data.git
+RUN git clone https://github.com/EduSanSou/GANs_for_Network_Intrusion_Data.git
 
 RUN pip install --no-cache-dir --upgrade pip setuptools wheel && \
     pip install --no-cache-dir \
