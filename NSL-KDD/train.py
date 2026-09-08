@@ -32,7 +32,7 @@ def main(arg):
 
     att_ind = np.where(x_train.label != label_mapping["normal"])[0]
     for_test = np.where(x_test.label != label_mapping["normal"])[0]
-
+    
     del label_mapping["normal"]
     clf.DISPLAY_PERFOMANCE = False
 
@@ -56,7 +56,8 @@ def main(arg):
     print("GAN Training Starting ....")
     model = cgan.CGAN(arg,x,y.reshape(-1,1))
     model.train()
-    print(model.generate_data(np.array([1,2,3])))
+    print("label_mapping:",label_mapping)
+    print(model.generate_data(np.array([0,2,3,4])))
     model.dump_to_file()
     print("GAN Training & Save [SUCCESSFUL]")
     #
