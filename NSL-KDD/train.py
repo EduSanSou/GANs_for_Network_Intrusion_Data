@@ -56,8 +56,8 @@ def main(arg):
     print("GAN Training Starting ....")
     model = cgan.CGAN(arg,x,y.reshape(-1,1))
     model.train()
-    print("label_mapping:",label_mapping)
-    print(model.generate_data(np.array([0,2,3,4])))
+    #print("label_mapping:",label_mapping)
+    #print(model.generate_data(np.array([0,2,3,4])))
     model.dump_to_file()
     print("GAN Training & Save [SUCCESSFUL]")
     #
