@@ -71,7 +71,6 @@ RUN python -m pip install \
 RUN python -m pip install \
         --timeout 300 \
         --retries 10 \
-        --resume-retries 10 \
         numpy==1.19.5 \
         pandas==1.2.5 \
         matplotlib==3.4.3 \
