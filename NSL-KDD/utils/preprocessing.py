@@ -74,7 +74,7 @@ def preprocess(x_train, x_test, data_cols, preprocessor = "StandardScaler",rejec
         scaler = RobustScaler(quantile_range=(0.1, 99.9))
         x_train[data_cols] = scaler.fit_transform(x_train[data_cols])
         x_test[data_cols] = scaler.transform(x_test[data_cols])
-        return x_train, x_test
+        return x_train, x_test, scaler
 
     if preprocessor == "power_transform":
         pt = PowerTransformer(method="yeo-johnson")
@@ -131,3 +131,7 @@ def normalize_data(X,data_cols):
     else :
         X[data_cols] = normalize(X[data_cols])
         return X
+
+def revert_scale(x,scaler):
+   original_x = scaler.inverse_transform(x)
+   return original_x
