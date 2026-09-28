@@ -39,16 +39,16 @@ def main(arguments):
     y = y_train[att_ind]
 
     # train Ml classifiers
-    print("Training classifiers : [Started]")
-    clfrs.DISPLAY_PERFOMANCE = False
-    randf = clfrs.random_forest(x, y, x_test[data_cols].values[for_test], y_test[for_test],label_mapping)
-    nn = clfrs.neural_network(x, y, x_test[data_cols].values[for_test], y_test[for_test],label_mapping,True)
-    deci = clfrs.decision_tree(x, y, x_test[data_cols].values[for_test], y_test[for_test],label_mapping)
-    svmclf = clfrs.svm(x, y, x_test[data_cols].values[for_test], y_test[for_test],label_mapping,True)
-    print("Training classifiers : [Finised]")
+    #print("Training classifiers : [Started]")
+    #clfrs.DISPLAY_PERFOMANCE = False
+    #randf = clfrs.random_forest(x, y, x_test[data_cols].values[for_test], y_test[for_test],label_mapping)
+    #nn = clfrs.neural_network(x, y, x_test[data_cols].values[for_test], y_test[for_test],label_mapping,True)
+    #deci = clfrs.decision_tree(x, y, x_test[data_cols].values[for_test], y_test[for_test],label_mapping)
+    #svmclf = clfrs.svm(x, y, x_test[data_cols].values[for_test], y_test[for_test],label_mapping,True)
+    #print("Training classifiers : [Finised]")
 
-    utils.save_classifiers([randf,nn,deci,svmclf])
-    print("Classifiers save to disk : [SUCCESSFUL]")
+    #utils.save_classifiers([randf,nn,deci,svmclf])
+    #print("Classifiers save to disk : [SUCCESSFUL]")
 
     #Define, Train & Save GAN
     print("GAN Training Starting ....")
