@@ -8,7 +8,7 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 np.random.seed(12343)
 from tensorflow.keras import backend as K
 from tensorflow.keras.models import Model
-from tensorflow.keras.layers import Dense, Input, concatenate, Dropout, Activation
+from tensorflow.keras.layers import Dense, Input, concatenate, Dropout, Activation, LeakyReLU
 from tensorflow.keras import optimizers
 from collections import defaultdict
 from tensorflow.keras.utils import get_custom_objects
@@ -83,9 +83,13 @@ class CGAN():
                 x = Dropout(0.2)(x)
             else:
                 x = Dense(self.min_num_neurones*n, activation=self.activation_f)(x)
+                #x = Dense(self.min_num_neurones*n)(x)
+                #x = LeakyReLU(alpha=0.2)(x)
                 x = Dropout(0.5)(x)
 
         x = Dense(self.min_num_neurones*n, activation=self.activation_f)(x)
+        #x = Dense(self.min_num_neurones*n)(x)
+        #x = LeakyReLU(alpha=0.2)(x)
         x = Dense(self.x_data_dim)(x)
         x = concatenate([x,labels])
 
@@ -98,7 +102,9 @@ class CGAN():
                 # x = Dense(self.min_num_neurones*n, activation='spocu')(x)
                 x = Dropout(0.2)(x)
             else:
-                x = Dense(self.min_num_neurones*n, activation='relu')(x)
+                x = Dense(self.min_num_neurones*n, activation=self.activation_f)(x)
+                #x = Dense(self.min_num_neurones*n)(x)
+                #x = LeakyReLU(alpha=0.2)(x)
 
         x = Dense(1, activation='sigmoid')(x)
 
@@ -193,7 +199,7 @@ class CGAN():
 
                 #Train the generator
                 g_loss = self.combined.train_on_batch([noise, sampled_labels], real_labels)
-                self.g_losses.append(g_loss[0])
+            self.g_losses.append(g_loss[0])
 
             if epoch % 10 == 0:
                 self.calculate_kl_div()
