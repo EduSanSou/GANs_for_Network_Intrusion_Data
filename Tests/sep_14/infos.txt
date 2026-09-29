@@ -1,0 +1,17 @@
+NSK-KDD
+
+Tempo de treinamento: 08:46  
+Arquivos gerados/alterados:
+- Treinamento -> logs/CGAN_32_4_2000_128_1_1_relu_sgd_00005_27.pickle
+- Treinamento -> imgs/CGAN_32_4_2000_128_1_1_relu_sgd_00005_27.png
+- Treinamento -> plots
+- Teste -> results/performance1789411926_5validations.txt
+
+UNSW-NB15 
+
+Tempo de treinamento: 19:23
+Arquivos gerados/alterados:
+- Treinamento -> imgs/CGAN_32_4_2000_128_1_1_relu_sgd_00005_27.png
+- Treinamento -> logs/CGAN_32_4_2000_128_1_1_relu_sgd_00005_27.pickle
+- Treinamento -> unsw_pcaplots
+- Teste -> results/performance_SVMSMOTE_5validations.txt && results/performance_SMOTEENN_5validations.txt results/performance_DGM_5validations.txt && results/performance_BorderlineSMOTE_5validations.txt && results/performance_ADASYN_5validations.txt
