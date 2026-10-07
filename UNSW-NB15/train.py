@@ -13,9 +13,9 @@ def main(arguments):
     print("Loading data [Started]")
     train,test, label_mapping = preprocessing.get_data()
     data_cols = list(train.drop(["label","attack_cat"],axis=1).columns)
-    train = utils.normalize_data(train,data_cols)
-    test = utils.normalize_data(test,data_cols)
-    train , test = preprocessing.preprocess(train,test,data_cols,"Robust",True)
+    #train = utils.normalize_data(train,data_cols)
+    #test = utils.normalize_data(test,data_cols)
+    #train , test = preprocessing.preprocess(train,test,data_cols,"Robust",True)
 
     x_train,y_train = train.drop(["label","attack_cat"],axis=1),train.attack_cat.values
     x_test , y_test =  test.drop(["label","attack_cat"],axis=1),test.attack_cat.values
@@ -23,12 +23,12 @@ def main(arguments):
 
     data_cols = list(x_train.columns)
 
-    to_drop = preprocessing.get_contant_featues(x_train,data_cols,threshold=0.99)
-    print("get_contant_featues : [DONE]")
-    x_train.drop(to_drop, axis=1,inplace=True)
-    x_test.drop(to_drop, axis=1,inplace=True)
-    data_cols = list(x_train.columns)
-    print("Preprocessing data [DONE]")
+    #to_drop = preprocessing.get_contant_featues(x_train,data_cols,threshold=0.99)
+    #print("get_contant_featues : [DONE]")
+    #x_train.drop(to_drop, axis=1,inplace=True)
+    #x_test.drop(to_drop, axis=1,inplace=True)
+    #data_cols = list(x_train.columns)
+    #print("Preprocessing data [DONE]")
 
     #filter out normal data points
     att_ind = np.where(y_train != label_mapping["Normal"])[0]
@@ -62,5 +62,5 @@ def main(arguments):
     utils.plot_training_summary(gan_path,'./imgs')
 
 if __name__ == '__main__':
-    gan_params = [32, 4, 2000, 128, 1, 1, 'relu', 'sgd', 0.0005, 27]
+    gan_params = [32, 4, 5000, 256, 1, 3, 'relu', 'sgd', 0.00005, 54]
     main(gan_params)

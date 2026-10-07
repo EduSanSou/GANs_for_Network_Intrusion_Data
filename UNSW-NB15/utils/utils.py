@@ -18,6 +18,8 @@ from sklearn.preprocessing import normalize
 from matplotlib import pyplot as plt
 # import seaborn as sns
 # sns.set_style("darkgrid")
+import sys
+np.set_printoptions(threshold=sys.maxsize)
 
 def compare_classifiers(x_old, y_old, x_test, y_test, data_generator, label_mapping, models,cv=3):
     """Compares the perfomace of models using recall, precision & fscore. Dumps the results in .txt file"""
@@ -78,6 +80,15 @@ def compare_classifiers(x_old, y_old, x_test, y_test, data_generator, label_mapp
         nn = neural_network(new_trainx, new_y, x_test, y_test,label_mapping,True)
         deci = decision_tree(new_trainx, new_y, x_test, y_test,label_mapping)
         sVmclf = svm(new_trainx, new_y, x_test, y_test,label_mapping,True)
+        #print("tipo das amostras geradas:\n",type(new_trainx)) #adicionado para teste
+        #print("tipo dos rotulo gerados:\n",type(new_y)) #adicionado para teste
+        #print("amostras:\n",new_trainx) #adicionado para teste
+        #print("rotulos:\n",new_y) #adicionado para teste
+        #inserir salvamento em arquivo de texto
+        with open("svmsmote_generated_samples.txt","w") as f:
+            print(new_trainx, file=f)
+        with open("svmsmote_generated_labels.txt","w") as g:
+            print(new_y, file=g)
 
         for estimator in [randf,deci,nn,sVmclf] :
             name = estimator.__class__.__name__

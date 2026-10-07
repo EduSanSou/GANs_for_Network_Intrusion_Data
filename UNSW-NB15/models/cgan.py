@@ -187,7 +187,7 @@ class CGAN():
 
                 #Train the generator
                 g_loss = self.combined.train_on_batch([noise, sampled_labels], real_labels)
-                self.g_losses.append(g_loss[0])
+            self.g_losses.append(g_loss[0])
 
             if epoch % 10 == 0:
                 self.calculate_kl_div()
