@@ -10,3 +10,4 @@ noise = np.random.normal(0,1,(n,rand_noise_dim))
 filepath = 'trained_generators/gen.h5'
 model = tf.keras.models.load_model(filepath)
 print(model.predict([noise,labels]))
+#model.summary()

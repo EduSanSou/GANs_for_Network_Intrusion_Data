@@ -62,5 +62,5 @@ def main(arguments):
     utils.plot_training_summary(gan_path,'./imgs')
 
 if __name__ == '__main__':
-    gan_params = [32, 4, 2000, 128, 1, 1, 'relu', 'sgd', 0.0005, 27]
+    gan_params = [32, 4, 2000, 128, 1, 1, 'spocu', 'sgd', 0.0005, 27]
     main(gan_params)
