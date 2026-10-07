@@ -8,6 +8,10 @@ labels = np.array([0,2,3,4])
 n = len(labels)
 rand_noise_dim = 32
 noise = np.random.normal(0,1,(n,rand_noise_dim))
+#print("noise:",noise)
 filepath = 'trained_generator/gen.h5'
 model = tf.keras.models.load_model(filepath)
-print(model.predict([noise,labels]))
+#print(model.predict([noise,labels]))
+processed_samples = model.predict([noise,labels])
+new_samples = preprocessing.revert_scale(processed_samples)
+#model.summary()
