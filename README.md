@@ -69,4 +69,4 @@ If you use our work, please also cite the paper:
   publisher={Springer}
 }
 ```
-NEW: repositório para síntese de dados com SMOTE.
+NEW: branch para síntese de dados com SMOTE.
