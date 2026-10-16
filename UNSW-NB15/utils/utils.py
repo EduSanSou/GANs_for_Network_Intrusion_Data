@@ -21,7 +21,7 @@ from matplotlib import pyplot as plt
 import sys
 np.set_printoptions(threshold=sys.maxsize)
 
-def compare_classifiers(x_old, y_old, x_test, y_test, data_generator, label_mapping, models,cv=3):
+def compare_classifiers(x_old, y_old, x_test, y_test, data_generator, label_mapping, models, encoder,cv=3):
     """Compares the perfomace of models using recall, precision & fscore. Dumps the results in .txt file"""
 
     a = {'Analysis':6000, 'Backdoor':6000, 'DoS':3000, 'Exploits':0,'Fuzzers':2000,\
@@ -50,7 +50,7 @@ def compare_classifiers(x_old, y_old, x_test, y_test, data_generator, label_mapp
         else:
             sm = SVMSMOTE(sampling_strategy = up_sampling_strategy,svm_estimator=SVC(C=10, cache_size=1500, class_weight='balanced'))
 
-        sm.fit(x_old,y_old)
+        sm.fit(x_old,y_old) 
         nameUpsampler = type(sm).__name__
 
     elapsed_time = time() - start_t
@@ -72,24 +72,31 @@ def compare_classifiers(x_old, y_old, x_test, y_test, data_generator, label_mapp
         else :
             start_t = time()
             sub_x, sub_y = subsample(x=x_old,y=y_old,size=25000)
+            with open("original_samples.txt","w") as e: #adicionado para teste
+                print(sub_x, file=e)
             new_trainx, new_y = sm.fit_resample(sub_x, sub_y)
+            print("tipo das amostras geradas:\n", type(new_trainx)) #adicionado para teste
+            new_trainx_dataframe = pd.DataFrame(new_trainx, columns = ['dur','proto','service','state','spkts','dpkts','sbytes','dbytes','rate','sttl','dttl','sload','dload','sloss','dloss','sinpkt','dinpkt','sjit','djit','swin','stcpb','dtcpb','dwin','tcprtt','synack','ackdat','smean','dmean','trans_depth','response_body_len','ct_srv_src','ct_state_ttl','ct_dst_ltm','ct_src_dport_ltm','ct_dst_sport_ltm','ct_dst_src_ltm','is_ftp_login','ct_ftp_cmd','ct_flw_http_mthd','ct_src_ltm','ct_srv_dst','is_sm_ips_ports','attack_cat','label']) #adicionado para teste
+            decoded_generated_samples = encoder.inverse_transform(new_trainx_dataframe) #adicionado para teste
             elapsed_time = time() - start_t
             print(f"Time taken : {elapsed_time}")
 
-        randf = random_forest(new_trainx, new_y, x_test, y_test,label_mapping)
-        nn = neural_network(new_trainx, new_y, x_test, y_test,label_mapping,True)
-        deci = decision_tree(new_trainx, new_y, x_test, y_test,label_mapping)
-        sVmclf = svm(new_trainx, new_y, x_test, y_test,label_mapping,True)
+        #randf = random_forest(new_trainx, new_y, x_test, y_test,label_mapping) #comentado para teste
+        #nn = neural_network(new_trainx, new_y, x_test, y_test,label_mapping,True) #comentaado para teste
+        #deci = decision_tree(new_trainx, new_y, x_test, y_test,label_mapping) #comentado para teste
+        #sVmclf = svm(new_trainx, new_y, x_test, y_test,label_mapping,True) #comentado para teste
         #print("tipo das amostras geradas:\n",type(new_trainx)) #adicionado para teste
         #print("tipo dos rotulo gerados:\n",type(new_y)) #adicionado para teste
         #print("amostras:\n",new_trainx) #adicionado para teste
         #print("rotulos:\n",new_y) #adicionado para teste
         #inserir salvamento em arquivo de texto
-        with open("svmsmote_generated_samples.txt","w") as f:
+        with open("svmsmote_generated_samples.txt","w") as f: #adicionado para teste
             print(new_trainx, file=f)
-        with open("svmsmote_generated_labels.txt","w") as g:
+        with open("svmsmote_generated_labels.txt","w") as g: #adicionado para teste
             print(new_y, file=g)
-
+        with open("decoded_svmsmote_generated_samples.txt","w") as h: #adicionado para teste
+            print(decoded_generated_samples.to_string(), file=h)
+'''#comentado para teste
         for estimator in [randf,deci,nn,sVmclf] :
             name = estimator.__class__.__name__
             pred = estimator.predict(x_test)
@@ -119,7 +126,7 @@ def compare_classifiers(x_old, y_old, x_test, y_test, data_generator, label_mapp
 
     with open(f'./results/performance_{nameUpsampler}_{cv}validations.txt', 'a') as outputfile:
         outputfile.write(nameUpsampler)
-
+'''
 def save_classifiers(clfs, dir = "./trained_classifiers"):
     if not os.path.exists(dir):
         os.makedirs(dir)

@@ -10,11 +10,12 @@ warnings.filterwarnings('ignore')
 data_folder = "../Data/UNSW-NB15"
 
 def get_data(encoding = "Label"):
-
     #drop id feature
     train = pd.read_csv(data_folder+"/UNSW_NB15_testing-set.csv",usecols=range(1,45))
     test = pd.read_csv(data_folder+"/UNSW_NB15_training-set.csv",usecols=range(1,45))
 
+    print("conjunto de treino antes da codificacao:\n", train) #adicionado para teste
+    print("tipo do conjunto de treino antes da codificacao:\n", type(train)) #adicionado para teste
     categorical_features = ["proto","state","service"]
 
     le = LabelEncoder()
@@ -50,7 +51,7 @@ def get_data(encoding = "Label"):
         train = enc.fit_transform(train,train.label)
         test = enc.transform(test)
 
-    return train, test, label_mapping
+    return train, test, label_mapping, enc
 
 def preprocess(x_train, x_test, data_cols, preprocessor = "StandardScaler",reject_features=False):
     """
