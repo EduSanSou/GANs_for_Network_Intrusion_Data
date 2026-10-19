@@ -54,7 +54,7 @@ categorical_features = ["proto","state","service"]
 enc = OrdinalEncoder(cols=categorical_features)
 x_train = enc.fit_transform(x_train,train.label)
 
-data_cols = list(x_train.columns)
+#data_cols = list(x_train.columns)
 
 #filter out normal data points
 att_ind = np.where(y_train != label_mapping["Normal"])[0]
@@ -67,19 +67,20 @@ del label_mapping["Normal"]
 #create up sampling strategy
 a = {'Analysis':6000, 'Backdoor':6000, 'DoS':3000, 'Exploits':0,'Fuzzers':2000,\
     'Generic':0, 'Reconnaissance':5000, 'Shellcode':2000, 'Worms':300}
-print("a value:\n", a)
+print("Number of samples to add for each class:\n", a)
 val, count = np.unique(y,return_counts =True)
 current_gt = dict(zip(val , count))
-print("current_gt value:\n", current_gt)
+print("Current number of samples for each class:\n", current_gt)
 up_sampling_strategy = {label_mapping.get(j) : i+current_gt.get(label_mapping.get(j)) for j, i in a.items() if i > 0}
-print("up_sampling_strategy value:\n", up_sampling_strategy)
-print("initial x shape:\n", x.shape)
-print("initial y shape:\n", y.shape)
+print("Up sampling strategy:\n", up_sampling_strategy)
+print("Initial x shape:\n", x.shape)
+print("Initial y shape:\n", y.shape)
 
 #undersampling major classes
-#rus = RandomUnderSampler(sampling_strategy = {label_mapping["Generic"]:20000,label_mapping["Exploits"]:20000},random_state=42)
-#x, y = rus.fit_resample(x,y)
-#print("Formato do conjunto x depois da subamostragem:\n", x.shape)
+rus = RandomUnderSampler(sampling_strategy = {label_mapping["Generic"]:20000,label_mapping["Exploits"]:20000},random_state=42)
+x, y = rus.fit_resample(x,y)
+print("x shape after undersampling:\n", x.shape)
+print("y shape after undersampling:\n", y.shape)
 
 #sampling
 #sub_x, sub_y = subsample(x=x,y=y,size=25000)
@@ -89,6 +90,7 @@ print("initial y shape:\n", y.shape)
 sm = SVMSMOTE(sampling_strategy = up_sampling_strategy,svm_estimator=SVC(C=10, cache_size=1500, class_weight='balanced'))
 new_trainx, new_y = sm.fit_resample(x, y)
 print("x shape after oversampling:\n", new_trainx.shape)
+print("y shape after oversampling:\n", new_y.shape)
 
 #decode categorical features
 new_trainx_dataframe = pd.DataFrame(new_trainx, columns = ['dur','proto','service','state','spkts','dpkts','sbytes','dbytes','rate','sttl','dttl','sload','dload','sloss','dloss','sinpkt','dinpkt','sjit','djit','swin','stcpb','dtcpb','dwin','tcprtt','synack','ackdat','smean','dmean','trans_depth','response_body_len','ct_srv_src','ct_state_ttl','ct_dst_ltm','ct_src_dport_ltm','ct_dst_sport_ltm','ct_dst_src_ltm','is_ftp_login','ct_ftp_cmd','ct_flw_http_mthd','ct_src_ltm','ct_srv_dst','is_sm_ips_ports'])
