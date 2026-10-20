@@ -54,20 +54,21 @@ categorical_features = ["proto","state","service"]
 enc = OrdinalEncoder(cols=categorical_features)
 x_train = enc.fit_transform(x_train,train.label)
 
-#data_cols = list(x_train.columns)
-
 #filter out normal data points
-att_ind = np.where(y_train != label_mapping["Normal"])[0]
-x = x_train[data_cols].values[att_ind]
-y = y_train[att_ind]
+#att_ind = np.where(y_train != label_mapping["Normal"])[0]
+#x = x_train[data_cols].values[att_ind]
+#y = y_train[att_ind]
 
 #remove Normal netwok traffic from data
-del label_mapping["Normal"]
+#del label_mapping["Normal"]
+
+#assign features and labels
+x = x_train.values
+y = y_train
 
 #create up sampling strategy
-a = {'Analysis':6000, 'Backdoor':6000, 'DoS':3000, 'Exploits':0,'Fuzzers':2000,\
-    'Generic':0, 'Reconnaissance':5000, 'Shellcode':2000, 'Worms':300}
-print("Number of samples to add for each class:\n", a)
+a = {'Analysis':6000, 'Backdoor':6000, 'DoS':3000, 'Exploits':0, 'Fuzzers':2000, 'Generic':0, 'Normal':0, 'Reconnaissance':5000, 'Shellcode':2000, 'Worms':300}
+print("Number of samples to be added for each class:\n", a)
 val, count = np.unique(y,return_counts =True)
 current_gt = dict(zip(val , count))
 print("Current number of samples for each class:\n", current_gt)
@@ -77,7 +78,7 @@ print("Initial x shape:\n", x.shape)
 print("Initial y shape:\n", y.shape)
 
 #undersampling major classes
-rus = RandomUnderSampler(sampling_strategy = {label_mapping["Generic"]:20000,label_mapping["Exploits"]:20000},random_state=42)
+rus = RandomUnderSampler(sampling_strategy = {label_mapping["Generic"]:20000,label_mapping["Exploits"]:20000,label_mapping["Normal"]:20000},random_state=42)
 x, y = rus.fit_resample(x,y)
 print("x shape after undersampling:\n", x.shape)
 print("y shape after undersampling:\n", y.shape)
