@@ -41,7 +41,7 @@ x = x_train.values
 y = y_train
 
 #create up sampling strategy
-a = {'Analysis':6000, 'Backdoor':6000, 'DoS':3000, 'Exploits':0, 'Fuzzers':2000, 'Generic':0, 'Normal':0, 'Reconnaissance':5000, 'Shellcode':2000, 'Worms':300}
+a = {'Analysis':8000, 'Backdoor':8254, 'DoS':0, 'Exploits':0, 'Fuzzers':0, 'Generic':0, 'Normal':0, 'Reconnaissance':0, 'Shellcode':8867, 'Worms':9870}
 print("Number of samples to be added for each class:\n", a)
 val, count = np.unique(y,return_counts =True)
 current_gt = dict(zip(val , count))
@@ -52,13 +52,13 @@ print("Initial x shape:\n", x.shape)
 print("Initial y shape:\n", y.shape)
 
 #undersampling major classes
-rus = RandomUnderSampler(sampling_strategy = {label_mapping["Generic"]:20000,label_mapping["Exploits"]:20000,label_mapping["Normal"]:20000},random_state=42)
+rus = RandomUnderSampler(sampling_strategy = {label_mapping["DoS"]:10000, label_mapping["Exploits"]:10000, label_mapping["Fuzzers"]:10000,label_mapping["Generic"]:10000,label_mapping["Normal"]:10000, label_mapping["Reconnaissance"]:10000},random_state=42)
 x, y = rus.fit_resample(x,y)
 print("x shape after undersampling:\n", x.shape)
 print("y shape after undersampling:\n", y.shape)
 
 #oversampling minor classes
-smnc = SMOTENC(categorical_features = [1,2,3], sampling_strategy = up_sampling_strategy, random_state = None, k_neighbors = 5)
+smnc = SMOTENC(categorical_features = [1,2,3], sampling_strategy = up_sampling_strategy, random_state = 42, k_neighbors = 5)
 new_trainx, new_y = smnc.fit_resample(x, y)
 print("x shape after oversampling:\n", new_trainx.shape)
 print("y shape after oversampling:\n", new_y.shape)
